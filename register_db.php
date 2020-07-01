@@ -99,10 +99,29 @@ if ($name && $email &&  $password && $cpassword)
 					$sql_statement = "INSERT INTO users(NAME,EMAIL,USERPASSWORD,EMAIL_CHECK,CONTROLLER)
 								VALUES ('$name','$email', '$password', '0', '$vkey')" ;
 
-
+				
+			
 					$db_id=mysql_insert_id();
+
 					
 					$result = mysqli_query($db,$sql_statement);
+
+				    
+
+					$sql_get_id = "SELECT USERID FROM USERS WHERE USERS.EMAIL ='$email'";
+
+					$res_id =  mysqli_query($db,$sql_get_id);
+
+
+				    $row = mysqli_fetch_assoc($res_id);
+
+
+				    $id = $row["USERID"];
+
+							$sql_2 = "INSERT INTO EXTRA_USERS(USERID)
+     				 VALUES ('$id')" ;
+
+					$result_2 = mysqli_query($db,$sql_2);
 
 					if ($result)
 					{

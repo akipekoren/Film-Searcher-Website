@@ -36,7 +36,7 @@ margin:0;
 {
 
 position: absolute;
-left:100px;
+left:55px;
 bottom: 570px;
 
 

@@ -1,7 +1,7 @@
 
 
 <?php
-
+$db = mysqli_connect('localhost','root','','deneme');
 
 session_start();
 
@@ -176,6 +176,26 @@ height:50px;
 
 } 
 
+.button7 {
+  position: absolute;
+  left: -5%;
+  top: 105%;
+
+width: 220px;
+height:30px;
+
+} 
+
+.button8 {
+  position: absolute;
+  left: 0%;
+  top: 65%;
+
+width: 210px;
+height:50px;
+
+} 
+
 .other {
   position: absolute;
   left: 50%;
@@ -191,6 +211,60 @@ height:50px;
    position: absolute;
   left: 25%;
   top: 20%;
+}
+
+.ProfData
+{   
+  position: absolute;
+  left: 30%;
+  top: 30%;
+
+}
+
+.Photo_loc
+{
+  position: absolute;
+  left: 60%;
+  top: 37%;
+  height:128px;
+  width: 128px;
+}
+
+.Prof_header
+{
+
+    position: absolute;
+  left: 68%;
+  top: 32%;
+}
+
+.Profile
+{
+   position: absolute;
+  left: 50%;
+  top: 20%;
+}
+
+.ask_pass
+{
+  position: absolute;
+  left: 182%;
+  top: 60%;
+}
+
+.up_but
+{
+  position: absolute;
+  left: 180%;
+  top: 80%;
+}
+
+.Photo
+{
+     
+  position: absolute;
+  left: -190%;
+  top: 17%;
 }
 
 
@@ -283,6 +357,11 @@ echo "<a href='"."$link"."'> $name</a>";
  <button class= "button button1"  name = "Rules" >Rules</button>
 </form>
 
+
+<form method="POST">
+ <button class= "button button4"  name = "myProf" >My Profile</button>
+</form>
+
 <form method="POST">
  <button class= "button button2"  name = "myMovies" >My Movies</button>
 </form>
@@ -291,21 +370,22 @@ echo "<a href='"."$link"."'> $name</a>";
  <button class= "button button3"  name = "myComments" >My Comments</button>
 </form>
 
-
 <form method="POST">
- <button class= "button button4"  name = "profSet" >Profile Settings</button>
+ <button class= "button button6"  name = "profSet" >Profile Settings</button>
 </form>
 
 <form method="POST" action="index.php">
- <button class= "button button6"  name = "profSet" >Add Movie to My list</button>
+ <button class= "button button8"  name = "menu" >Add Movie to My list</button>
 </form>
+
+
 
 
 
 
 <?php
 
-if(isset($_POST["myMovies"]) || (!isset($_POST["Rules"]) && !isset($_POST["myMovies"]) && !isset($_POST["myComments"]) && !isset($_POST["profSet"])))
+if(isset($_POST["myMovies"]) || (!isset($_POST["Rules"]) && !isset($_POST["myProf"]) && !isset($_POST["myMovies"]) && !isset($_POST["myComments"]) && !isset($_POST["profSet"])))
 
 {
 
@@ -339,7 +419,7 @@ if(isset($_POST["myMovies"]) || (!isset($_POST["Rules"]) && !isset($_POST["myMov
 
 	<?php
 
-$db = mysqli_connect('localhost','root','','deneme');
+
 
 
 //$sql_statement = "SELECT FILM.FILMID, FILM.TITLE,FILM.GENRE,FILM.RATING,FILM.LANGUAGE,FILM.DIRECTOR,FILM.COUNTRY, FILM.YEAR, MONEY_SUPPLIES.MONEY_MADE,FILM_WINS_AWARDS.NAME FROM FILM INNER JOIN MONEY_SUPPLIES INNER JOIN FILM_WINS_AWARDS WHERE FILM.FILMID = MONEY_SUPPLIES.FILMID AND FILM.FILMID = FILM_WINS_AWARDS.FILMID AND FILM.FILMID = FILM_WINS_AWARDS.FILMID" ;
@@ -347,7 +427,12 @@ $id = $_SESSION['id'];
 
 $sql_statement = "SELECT * FROM USER_FILM INNER JOIN FILM WHERE USER_FILM.FILMID = FILM.FILMID AND USER_FILM.USERID = '$id' " ;
 
+
 $result = mysqli_query($db,$sql_statement);
+
+
+
+//$result = mysqli_query($db,$sql_statement);
 
 
 while($row = mysqli_fetch_assoc($result))
@@ -378,7 +463,6 @@ while($row = mysqli_fetch_assoc($result))
   }
 
 
-
 }
 
 
@@ -403,6 +487,221 @@ else if (isset($_POST["Rules"]))
 </div>
 
 <?php
+}
+
+
+else if (isset($_POST["profSet"]))
+{
+$id = $_SESSION['id'];
+
+$sql_statement = "SELECT * FROM USERS WHERE  USERS.USERID = '$id' " ;
+
+$result = mysqli_query($db,$sql_statement);
+$row = mysqli_fetch_assoc($result);
+
+
+
+$sql_extra = "SELECT * FROM EXTRA_USERS WHERE EXTRA_USERS.USERID = '$id' ";
+$result_ext = mysqli_query($db,$sql_extra);
+$row_ext = mysqli_fetch_assoc($result_ext);
+
+
+$sql_upload = "SELECT * FROM Photo WHERE Photo.USERID = '$id' ";
+$result_up = mysqli_query($db,$sql_upload);
+$row_up = mysqli_fetch_assoc($result_up);
+
+
+$name = $row["NAME"];
+$email = $row["EMAIL"];
+$pass = $row["USERPASSWORD"];
+
+$country = $row_ext["COUNTRY"];
+$favMov = $row_ext["FAVMOV"];
+$favAct = $row_ext["FAVACT"];
+$age = $row_ext["AGE"];
+
+$bio = $row_up["BIO"];
+
+
+
+?>
+
+<div class="Profile">
+
+<h1> Change Profile </h1>
+<form action="update_profile.php" method="POST" enctype="multipart/form-data">
+
+
+<label for="fname">Email  </label>
+<br>
+<input type = "text" value= "<?php echo $email ?>" name="email" style="height:20px; width:200px;font-size:9pt;" ><br>
+<br>
+
+<label for="fname">Name  </label>
+<br>
+<input type = "text" value= "<?php echo $name ?>" name="name" style="height:20px; width:200px;font-size:9pt;" ><br>
+<br>
+
+<label for="fname">Country  </label>
+<br>
+<input type = "text" value= "<?php echo $country ?>" name="country" style="height:20px; width:200px;font-size:9pt;" ><br>
+<br>
+
+<label for="fname">Age  </label>
+<br>
+<input type = "text" value= "<?php echo $age ?>" name="age" style="height:20px; width:200px;font-size:9pt;" ><br>
+<br>
+
+<label for="fname">Favourite Movie  </label>
+<br>
+<input type = "text" value= "<?php echo $favMov ?>" name="favMov" style="height:20px; width:200px;font-size:9pt;" ><br>
+<br>
+
+<label for="fname">Favourite Actor  </label>
+<br>
+<input type = "text" value= "<?php echo $favAct ?>" name="favAct" style="height:20px; width:200px;font-size:9pt;" ><br>
+<br>
+
+<div class = "ask_pass">
+<label for="fname">Password to confirm the changes </label>
+<br>
+<input type = "Password"  name="password" style="height:20px; width:200px;font-size:9pt;" required ><br>
+
+</div>
+
+
+<div class="Photo">
+
+
+   <label for="bio"> Bio </label>
+    <br>
+    <textarea name="bio" id="bio"  rows="7" cols="45"> <?php echo $bio ?> </textarea>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <label for="profileImage"> Upload Profile Image </label>
+    <br>
+    <br>
+    <input type="file" name="profileImage" id = "profileImage">
+
+ 
+
+
+ </div>
+
+<div class = "up_but">
+
+<button type="submit" name="save-user" class="button button7" > Update Profile </button>
+
+</div>
+
+
+</form>
+
+</div>
+
+
+
+
+
+<?php
+
+}
+
+else if (isset($_POST["myProf"]))
+{
+$id = $_SESSION['id'];
+
+$sql_statement = "SELECT * FROM USERS WHERE  USERS.USERID = '$id' " ;
+
+$result = mysqli_query($db,$sql_statement);
+$row = mysqli_fetch_assoc($result);
+
+
+
+$sql_extra = "SELECT * FROM EXTRA_USERS WHERE EXTRA_USERS.USERID = '$id' ";
+$result_ext = mysqli_query($db,$sql_extra);
+$row_ext = mysqli_fetch_assoc($result_ext);
+
+
+$sql_upload = "SELECT * FROM Photo WHERE Photo.USERID = '$id' ";
+$result_up = mysqli_query($db,$sql_upload);
+$row_up = mysqli_fetch_assoc($result_up);
+
+
+$name = $row["NAME"];
+$email = $row["EMAIL"];
+$pass = $row["USERPASSWORD"];
+
+$country = $row_ext["COUNTRY"];
+$favMov = $row_ext["FAVMOV"];
+$favAct = $row_ext["FAVACT"];
+$age = $row_ext["AGE"];
+$bio = $row_up["BIO"];
+$img_src = $row_up["IMAGE"];
+
+
+
+?>
+
+
+<div class = "ProfData">
+
+<ul>
+  <li> <b> Name</b> : <?php  echo $name ?></li>
+  <br>
+  <li><b>Email</b> : <?php echo $email ?> </li>
+  <br>
+  <li><b>Age</b> : <?php echo $age ?> </li>
+  <br>
+  <li><b> Country</b> : <?php echo $country ?> </li>
+  <br>
+  <li><b> Favorite Movie</b> : <?php echo $favMov ?> </li>
+  <br>
+  <li><b> Favorite Actor</b> : <?php echo $favAct ?> </li>
+  <br>
+  <li><b> Biography </b> : <?php echo $bio ?> </li>
+
+</ul>
+
+
+
+
+</div>
+
+<div class="Prof_header">
+
+<b>Profile Photo</b>
+</div>
+
+
+
+<?php
+
+if (isset($img_src))
+{
+
+
+?>
+<div class="Photo_loc">
+<img src="<?php echo $img_src?>" alt=HTML5 Icon >
+</div>
+
+<?php
+
+}
+else
+{
+?>
+<div class="Photo_loc">
+<img src="yy.png" alt=HTML5 Icon width="320px" height="240px" >
+</div>
+
+  <?php
+}
+
 }
 
 ?>

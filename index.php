@@ -96,29 +96,16 @@ tr:nth-child(even) {
 
 
 
-
-
-.right {	
-  position: absolute;	
-  left: 93%;
-  top: 70%;
-  transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -webkit-transform: translate(-50%, -50%); 
-  width: 100px;
-  height: 100px;
-}
-
 .center {
   position: absolute;	
-  left: 80%;
+  left: 83%;
   top: 70%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%); 
 
-  width: 100px;
-  height: 100px;
+  width: 20px;
+  height: 20px;
 }
 .message {
   position: absolute; 
@@ -363,51 +350,18 @@ if(isset($_SESSION['email']) && $_SESSION['email'] == 'admin@gmail.com')
 {
 
 ?>
-<div class = "center" style="width:150px;height:300px;border:3px solid #000;">
+<div class = "center" style="width:120px;height:120px;border:3px solid #000;">
 <b>Insert Producer</b>
 <form action="producer.php" method="POST">
-<button>add</button>
+<button>Insert Movie to Database</button>
 </form>
 <b>Insert Actor</b>
 <form action="actor.php" method="POST">
-<button >add</button>
+<button >Delete Movie from Database</button>
 </form>
-<b>Insert Film</b>
-<form action="film.php" method=	"POST">
-<button >add</button>
-</form>
-<b>Insert Money Information</b>
-<form action="money.php" method="POST">
-<button >add</button>
-</form>
-<b>Insert Award</b>
-<form action="award.php" method="POST">
-<button >add</button>
-</form>
-<b>Insert Actor Award</b>
-<form action="actor_award.php" method="POST">
-<button >add</button>
-</form>
-<b>Insert Film Award</b>
-<form action="film_award.php" method="POST">
-<button >add</button>
-</form>
+
 </div>
 
-<div class = "right" style="width:150px;height:300px;border:3px solid #000;">
-<b>Delete Producer</b>
-<form action="delete_producer.php" method="POST">
-<button>delete</button>
-</form>
-<b>Delete Actor</b>
-<form action="delete_actor.php" method=	"POST">
-<button>delete</button>
-</form>
-<b>Delete Film</b>
-<form action="delete_film.php" method=	"POST">
-<button>delete</button>
-</form>
-</div>
 
 
 <?php
@@ -417,15 +371,7 @@ if(isset($_SESSION['email']) && $_SESSION['email'] == 'admin@gmail.com')
 
 ?>
 
-<form action="show_movies.php" method="GET">
-<button class="button button1">Show the films</button>
-</form>
-<form action="show_actors.php" method="GET">
-<button class="button button2">Show the actors</button>
-</form>
-<form action="show_producers.php" method="POST">
-<button class="button button3">Show the producers</button>
-</form>
+
 
 
 

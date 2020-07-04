@@ -127,8 +127,6 @@ if ($name && $email &&  $password && $cpassword)
 					{
 
 
-
-
 					require 'vendor/autoload.php';
 
 					$mail = new PHPMailer(true);

@@ -425,7 +425,7 @@ if(isset($_POST["myMovies"]) || (!isset($_POST["Rules"]) && !isset($_POST["myPro
 //$sql_statement = "SELECT FILM.FILMID, FILM.TITLE,FILM.GENRE,FILM.RATING,FILM.LANGUAGE,FILM.DIRECTOR,FILM.COUNTRY, FILM.YEAR, MONEY_SUPPLIES.MONEY_MADE,FILM_WINS_AWARDS.NAME FROM FILM INNER JOIN MONEY_SUPPLIES INNER JOIN FILM_WINS_AWARDS WHERE FILM.FILMID = MONEY_SUPPLIES.FILMID AND FILM.FILMID = FILM_WINS_AWARDS.FILMID AND FILM.FILMID = FILM_WINS_AWARDS.FILMID" ;
 $id = $_SESSION['id'];
 
-$sql_statement = "SELECT * FROM USER_FILM INNER JOIN FILM WHERE USER_FILM.FILMID = FILM.FILMID AND USER_FILM.USERID = '$id' " ;
+$sql_statement = "SELECT * FROM USER_MOVIE INNER JOIN MOVIES WHERE USER_MOVIE.MOVIEID = MOVIES.MOVIEID AND USER_MOVIE.USERID = '$id' " ;
 
 
 $result = mysqli_query($db,$sql_statement);
@@ -438,16 +438,16 @@ $result = mysqli_query($db,$sql_statement);
 while($row = mysqli_fetch_assoc($result))
   {
  
-    $title = $row['TITLE'];
+    $title = $row['MOVIETITLE'];
     $rating = $row['RATING'];
-    $genre = $row['GENRE'];
-    $year = $row['YEAR'];
-    $language = $row['LANGUAGE'];
-    $country = $row['COUNTRY'];
+    $genre = $row['GENRES'];
+    //$year = $row['YEAR'];
+    //$language = $row['LANGUAGE'];
+    //$country = $row['COUNTRY'];
     //$money_made = $row['MONEY_MADE'];
     //$awards = $row['NAME'];
     //$director = $row['DIRECTOR'];
-    $filmid = $row['FILMID'];
+    $filmid = $row['MOVIEID'];
     
 
   

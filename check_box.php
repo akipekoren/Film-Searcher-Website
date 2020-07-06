@@ -21,8 +21,7 @@ if(!empty($_POST['check_list'])) {
     foreach ($array as $key) {
 
 
-
-$sql_statement = "INSERT INTO user_film(USERID, FILMID)
+$sql_statement = "INSERT INTO USER_MOVIE (USERID, MOVIEID)
 			VALUES ('$id','$key')" ;
 
 $result = mysqli_query($db,$sql_statement);

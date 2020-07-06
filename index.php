@@ -350,15 +350,13 @@ if(isset($_SESSION['email']) && $_SESSION['email'] == 'admin@gmail.com')
 {
 
 ?>
-<div class = "center" style="width:120px;height:120px;border:3px solid #000;">
-<b>Insert Producer</b>
-<form action="producer.php" method="POST">
+<div class = "center" style="width:160px;height:120px;border:3px solid #000;">
+<b>Insert Movie</b>
+<form action="film_db.php" method="POST">
+<input type = "text" name="csv_file"><br>
 <button>Insert Movie to Database</button>
 </form>
-<b>Insert Actor</b>
-<form action="actor.php" method="POST">
-<button >Delete Movie from Database</button>
-</form>
+
 
 </div>
 
@@ -410,18 +408,10 @@ if(isset($_SESSION['email']) && isset($_SESSION['id']))
 $db = mysqli_connect('localhost','root','','deneme');
 
 
-$sql_statement = "SELECT FILM.FILMID, FILM.TITLE,FILM.GENRE,FILM.RATING,FILM.LANGUAGE,FILM.DIRECTOR,FILM.COUNTRY, FILM.YEAR, MONEY_SUPPLIES.MONEY_MADE,FILM_WINS_AWARDS.NAME FROM FILM INNER JOIN MONEY_SUPPLIES INNER JOIN FILM_WINS_AWARDS WHERE FILM.FILMID = MONEY_SUPPLIES.FILMID AND FILM.FILMID = FILM_WINS_AWARDS.FILMID AND FILM.FILMID = FILM_WINS_AWARDS.FILMID" ;
+
+$sql_statement = "SELECT * FROM MOVIES";
 
 
-if (isset($_SESSION['id']))
-{
-$id = $_SESSION['id'];
-$sql_user_statement = "SELECT USER_FILM.FILMID FROM USER_FILM WHERE USER_FILM.USERID = '$id'" ;
-
-$result_user = mysqli_query($db,$sql_statement);
-
-
-}
 
 
 $result = mysqli_query($db,$sql_statement);
@@ -429,16 +419,12 @@ $result = mysqli_query($db,$sql_statement);
 while($row = mysqli_fetch_assoc($result))
   {
  
-    $title = $row['TITLE'];
+
+
+    $filmid = $row['MOVIEID'];
+    $title = $row['MOVIETITLE'];
+    $genre = $row['GENRES'];
     $rating = $row['RATING'];
-    $genre = $row['GENRE'];
-    $year = $row['YEAR'];
-    $language = $row['LANGUAGE'];
-    $country = $row['COUNTRY'];
-    $money_made = $row['MONEY_MADE'];
-    $awards = $row['NAME'];
-    $director = $row['DIRECTOR'];
-    $filmid = $row['FILMID'];
     
 
   
@@ -450,8 +436,8 @@ while($row = mysqli_fetch_assoc($result))
   ?>
 
 
-  <td><a href='delete_f_db.php?id=".$row["FILMID"]."' alt='edit'>Delete</a></td>
-    <td><a href='delete_f_db.php?id=".$row["FILMID"]."' alt='edit'>Edit</a></td>
+  <td><a href='delete_f_db.php?id=".$row["MOVIEID"]."' alt='edit'>Delete</a></td>
+    <td><a href='delete_f_db.php?id=".$row["MOVIEID"]."' alt='edit'>Edit</a></td>
 
     <td>
       <form action="check_box.php" method="post">
@@ -467,12 +453,12 @@ while($row = mysqli_fetch_assoc($result))
   else
   {
 
-    if(isset($_SESSION['email']))
+   if(isset($_SESSION['email']))
 
 { 
 
   $id = $_SESSION['id'];
-  $sql_user_statement = "SELECT USER_FILM.FILMID FROM USER_FILM WHERE USER_FILM.FILMID = '$filmid'  AND USER_FILM.USERID = '$id'" ;
+  $sql_user_statement = "SELECT USER_MOVIE.MOVIEID FROM USER_MOVIE WHERE USER_MOVIE.MOVIEID = '$filmid' AND USER_MOVIE.USERID = '$id'" ;
   $result_user = mysqli_query($db,$sql_user_statement); 
   $count=$result_user->num_rows;
 

@@ -1,6 +1,10 @@
 
 
 <?php
+
+
+include 'functions.php';
+
 $db = mysqli_connect('localhost','root','','deneme');
 
 session_start();
@@ -45,6 +49,55 @@ session_start();
   cursor: pointer;
 }
 
+.Detail_but
+{
+   background-color: #3390FF;
+  color: #273746;
+  font-size: 11px;
+    text-decoration: none;
+  display: inline-block;
+    cursor: pointer;
+      text-align: center;
+      width: 180px;
+
+}
+
+.Delete_but
+{
+     background-color: #3390FF;
+  color: #273746;
+  font-size: 11px;
+    text-decoration: none;
+  display: inline-block;
+    cursor: pointer;
+      text-align: center;
+      width: 180px;
+}
+
+.back_button
+
+
+{
+  position: absolute; 
+  left: 65%;
+  top: 89%;
+     background-color: #3390FF;
+  color: #273746;
+  font-size: 11px;  
+     padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    width:250px;
+    height:40px;
+
+
+
+
+
+
+}
+
 
 .header {
   position: absolute; 
@@ -58,6 +111,23 @@ session_start();
   height: 100px;
   color: #6433FF
 }
+
+.det_table
+{
+  position: absolute; 
+  left: 25%;
+  top: 20%;
+
+}
+
+
+.act_table
+{
+   position: absolute; 
+  left: 60%;
+  top: 20%;
+}
+
 
 
 .logo_button {
@@ -121,7 +191,7 @@ bottom: 570px;
 {
 position: absolute;
 height:500px;       
-width: 800px;
+width: 1200px;
 overflow: auto;
 overflow-x: hidden;
 
@@ -300,6 +370,7 @@ td, th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
+  width: 180px;
 
 }
 
@@ -309,12 +380,12 @@ tr:nth-child(even) {
 
 
 
+
 </style>
 <head>
 	<title></title>
 </head>
 <body>
-
 
 
 
@@ -385,7 +456,7 @@ echo "<a href='"."$link"."'> $name</a>";
 
 <?php
 
-if(isset($_POST["myMovies"]) || (!isset($_POST["Rules"]) && !isset($_POST["myProf"]) && !isset($_POST["myMovies"]) && !isset($_POST["myComments"]) && !isset($_POST["profSet"])))
+if(isset($_POST["myMovies"]) || (!isset($_POST["Rules"]) && !isset($_POST["myProf"]) && !isset($_POST["myMovies"]) && !isset($_POST["myComments"]) && !isset($_POST["det"]) && !isset($_POST["profSet"])))
 
 {
 
@@ -402,8 +473,7 @@ if(isset($_POST["myMovies"]) || (!isset($_POST["Rules"]) && !isset($_POST["myPro
  <th>TITLE</th>   
   <th>GENRE</th> 
    <th>RATING</th> 
-
-
+   <th>  </th>
 
    <th>  </th>
 
@@ -422,7 +492,6 @@ if(isset($_POST["myMovies"]) || (!isset($_POST["Rules"]) && !isset($_POST["myPro
 
 
 
-//$sql_statement = "SELECT FILM.FILMID, FILM.TITLE,FILM.GENRE,FILM.RATING,FILM.LANGUAGE,FILM.DIRECTOR,FILM.COUNTRY, FILM.YEAR, MONEY_SUPPLIES.MONEY_MADE,FILM_WINS_AWARDS.NAME FROM FILM INNER JOIN MONEY_SUPPLIES INNER JOIN FILM_WINS_AWARDS WHERE FILM.FILMID = MONEY_SUPPLIES.FILMID AND FILM.FILMID = FILM_WINS_AWARDS.FILMID AND FILM.FILMID = FILM_WINS_AWARDS.FILMID" ;
 $id = $_SESSION['id'];
 
 $sql_statement = "SELECT * FROM USER_MOVIE INNER JOIN MOVIES WHERE USER_MOVIE.MOVIEID = MOVIES.MOVIEID AND USER_MOVIE.USERID = '$id' " ;
@@ -438,32 +507,211 @@ $result = mysqli_query($db,$sql_statement);
 while($row = mysqli_fetch_assoc($result))
   {
  
-    $title = $row['MOVIETITLE'];
-    $rating = $row['RATING'];
-    $genre = $row['GENRES'];
-    //$year = $row['YEAR'];
-    //$language = $row['LANGUAGE'];
-    //$country = $row['COUNTRY'];
-    //$money_made = $row['MONEY_MADE'];
-    //$awards = $row['NAME'];
-    //$director = $row['DIRECTOR'];
-    $filmid = $row['MOVIEID'];
+    $title = $row["MOVIETITLE"];
+    $rating = $row["RATING"];
+    $genre = $row["GENRES"];
+    $filmid = $row["MOVIEID"];
+
+    $new_g = "";
+
+    $new_name =   getName($genre,$new_g,0);
     
 
   
-  echo "<tr>" . "<th>" . $title . "</th>" ."<th>" . $genre . "</th>" . "<th>" . $rating .  "</th>";
+  echo "<tr>" . "<th>" . $title . "</th>" ."<th>" . $new_name . "</th>" . "<th>" . $rating .  "</th>" ;
 
   
   ?>
 
-      <td><a href='delete_f_db.php?id=".$row["FILMID"]."' alt='edit'>See the details of the Movie</a></td>
+  <td> 
+      <form method="POST">
+        <button class = "Detail_but" name = "det" value="<?= $filmid ?>" > <b>See the Details</b></button>
+    </form>
+</td>
+
+
+  <td> 
+    <form method="POST">
+      <button class = "Delete_but" name = "del" value="<?= $filmid ?>" > <b>Delete Movie</b></button>
+    </form>
+</td>
+
+
+
+
+
 
   <?php
+
+  if (isset($_POST["del"]))
+  {
+
+
+    $fid = $_POST["del"];
+    $id = $_SESSION['id'];
+
+    $sql = "DELETE FROM USER_MOVIE WHERE MOVIEID = '$fid' AND USERID = '$id' ";
+
+    $res = mysqli_query($db,$sql);
+
+
+  }
 
   }
 
 
+
+
+
+
+
 }
+
+
+
+  else if(isset($_POST["det"]))
+  {
+    
+$postedId = $_POST["det"];
+
+$sql = "SELECT * FROM MOVIES WHERE MOVIEID = '$postedId' ";
+
+$res = mysqli_query($db,$sql);
+
+$myRow = mysqli_fetch_assoc($res);
+
+$movTitle = $myRow["MOVIETITLE"];
+$director = $myRow["DIRECTORNAME"];
+$duration = $myRow["DURATION"];
+$genre = $myRow["GENRES"];
+$actor_1 = $myRow["ACTOR_1"];
+$actor_2 = $myRow["ACTOR_2"];
+$actor_3 = $myRow["ACTOR_3"];
+$votes = $myRow["VOTES"];
+$face_like = $myRow["FACELIKES"];
+$imdb_link = $myRow["LINK"];
+$language = $myRow["LANG"];
+$country = $myRow["COUNTRY"];
+$budget = $myRow["BUDGET"];
+$year = $myRow["YEAR"];
+$rating = $myRow["RATING"];
+$color = $myRow["COLOR"];
+
+
+
+
+$color = check_Color($color);
+$year = year_arrange($year);
+
+
+$new_g = "";
+
+$new_name =   getName($genre,$new_g,0);
+
+
+?>
+
+<div class = "det_table">
+
+       <table border = "1">
+         <tr>
+            <td colspan = "3"><center> <h2> Movie Information </h2></center></td>
+         </tr>
+         <tr>
+            <td><b> TITLE </b></td>
+            <td><?php echo $movTitle ?></td>
+         </tr>
+         
+         <tr>
+            <td><b> DIRECTOR</b> </td>
+            <td><?php echo $director ?></td>
+         </tr>
+           <tr>
+            <td><b> GENRE </b></td>
+            <td><?php echo $new_name ?></td>
+         </tr>
+           <tr>
+            <td><b> COUNTRY </b></td>
+            <td><?php echo $country ?></td>
+         </tr>
+           <tr>
+            <td><b> LANGUAGE </b></td>
+            <td><?php echo $language ?></td>
+         </tr>
+           <tr>
+            <td><b> YEAR </b></td>
+            <td><?php echo $year ?></td>
+         </tr>
+           <tr>
+            <td><b> DURATION </b></td>
+            <td><?php echo $duration . " " . "minutes" ?></td>
+         </tr>
+           <tr>
+            <td><b> BUDGET </b></td>
+            <td><?php echo "$".$budget ?></td>
+         </tr>
+           <tr>
+            <td><b> RATING </b></td>
+            <td><?php echo $rating ?></td>
+         </tr>
+           <tr>
+            <td><b> TOTAL VOTES </b></td>
+            <td><?php echo $votes ?></td>
+         </tr>
+           <tr>
+            <td><b> TOTAL FACEBOOK LIKES </b></td>
+            <td><?php echo $face_like ?></td>
+         </tr>
+           <tr>
+            <td><b> COLOR </b></td>
+            <td><?php echo $color ?></td>
+         </tr>
+              <tr>
+            <td><b> IMDB LINK </b></td>
+            <td><?php echo "<a href='".$imdb_link."'>Imdb Page</a>";?></td>
+         </tr>
+      </table>
+
+
+    </div>
+
+
+
+    <div class = "act_table">
+<table border = "1">
+         <tr>
+            <td colspan = "3"><center> <h2> Famous Actors </h2></center></td>
+         </tr>
+         <tr>
+            <td><b> First Actor </b></td>
+            <td><?php echo $actor_1 ?></td>
+         </tr>
+         
+         <tr>
+            <td><b> Second Actor </b> </td>
+            <td><?php echo $actor_2 ?></td>
+         </tr>
+           <tr>
+            <td><b> Third Actor </b></td>
+            <td><?php echo $actor_3 ?></td>
+         </tr>
+      </table>
+
+    </div>
+
+
+  <form method="POST" action="profile.php">
+ <button class = "back_button" > <b>Back to Movie List</b></button>
+</form>
+
+
+<?php
+  
+    
+
+  }
+
+
 
 
 else if (isset($_POST["Rules"]))
@@ -673,7 +921,7 @@ $img_src = $row_up["IMAGE"];
 
 <div class="Prof_header">
 
-<b>Profile Photo</b>
+<b>Profile Photo</b>  
 </div>
 
 
@@ -705,6 +953,7 @@ else
 }
 
 ?>
+
 
 
 

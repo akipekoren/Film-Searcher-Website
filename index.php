@@ -1,6 +1,6 @@
 <?php
 
-
+include 'functions.php';
 session_start();
 
 
@@ -425,10 +425,14 @@ while($row = mysqli_fetch_assoc($result))
     $title = $row['MOVIETITLE'];
     $genre = $row['GENRES'];
     $rating = $row['RATING'];
+
+    $new_g = "";
+
+    $new_name =   getName($genre,$new_g,0);
     
 
   
-  echo "<tr>" . "<th>" . $title . "</th>" ."<th>" . $genre . "</th>" . "<th>" . $rating .  "</th>";
+  echo "<tr>" . "<th>" . $title . "</th>" ."<th>" . $new_name . "</th>" . "<th>" . $rating .  "</th>";
 
 
   if(isset($_SESSION['email']) && $_SESSION['email'] == 'admin@gmail.com')

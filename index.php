@@ -109,8 +109,8 @@ tr:nth-child(even) {
 }
 .message {
   position: absolute; 
-  left: 94%;
-  top: 27%;
+  left: 90%;
+  top: 45%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%); 
@@ -118,6 +118,14 @@ tr:nth-child(even) {
   width: 800px;
   height: 100px;
 }
+
+.filter
+{
+    position: absolute; 
+  left: 120%;
+  top: 27%;
+}
+
 
 
 .header {
@@ -224,6 +232,41 @@ width: 125px;}
   top: 7%;
 
 }
+
+
+
+.f_name{
+
+    position: absolute;
+  left: 50%;
+  top: 0%;
+}
+
+.f_director
+{
+
+    position: absolute;
+  left: 50%;
+  top: 26%;
+
+}
+
+.f_genre
+{
+    position: absolute;
+  left: 50%;
+  top: 52%;
+
+}
+
+
+.search_but
+{
+
+    position: absolute;
+  left: 80%;
+  top: 75%;  
+}
 </style>	
 
 	</head>
@@ -306,10 +349,6 @@ echo "<a href='"."$link"."'> $name</a>";
 }
 ?>
 
-
-
-
-
 <form action="index.php" method="POST">
 <button class="button logo_button"><i>FS</i></button>
 </form>
@@ -371,8 +410,6 @@ if(isset($_SESSION['email']) && $_SESSION['email'] == 'admin@gmail.com')
 
 
 
-
-
 <div id="main_list">
 
 <div id="div1">
@@ -394,6 +431,11 @@ if(isset($_SESSION['email']) && isset($_SESSION['id']))
 
    <?php
  }
+
+
+ if (!isset($_POST['search_button']))
+ {
+
    ?>
  </tr>
 
@@ -407,20 +449,13 @@ if(isset($_SESSION['email']) && isset($_SESSION['id']))
 
 $db = mysqli_connect('localhost','root','','deneme');
 
-
-
 $sql_statement = "SELECT * FROM MOVIES";
-
-
-
 
 $result = mysqli_query($db,$sql_statement);
 
 while($row = mysqli_fetch_assoc($result))
   {
  
-
-
     $filmid = $row['MOVIEID'];
     $title = $row['MOVIETITLE'];
     $genre = $row['GENRES'];
@@ -468,14 +503,11 @@ while($row = mysqli_fetch_assoc($result))
 
   if ($count > 0)
   {
-
     ?>
 
       <td>
           Already in your list
         </td>
-
-
 
     <?php
 
@@ -505,6 +537,107 @@ while($row = mysqli_fetch_assoc($result))
 }
 
 }
+
+}
+
+else if (isset($_POST['search_button']) )
+{
+  ?>
+</div>
+</table>
+<div id="div2">
+<table id ="table2">
+  <?php
+  $db = mysqli_connect('localhost','root','','deneme');
+  $search_1 = $_POST['search_genre'];
+  $search_2 = $_POST['search_lang'];
+  $search_3 = $_POST['search_director'];
+  $search_4 = $_POST['search_year'];
+  $search_5 = $_POST['search_rating'];  
+  $search_6 = $_POST['search_name'];
+  if ($search_2 === "Language of Movie")
+    $search_2 = "";
+  if ($search_1 === "Genre of Movie")
+    $search_1 ="";
+  $arr = array();
+  array_push($arr,$search_1,$search_2,$search_3,$search_4,$search_5,$search_6);
+  $query_arr = array();
+  $filt_1 = " MOVIES.GENRES LIKE '%{$search_1}%' ";
+  $filt_2 = " MOVIES.LANG = '$search_2' ";
+  $filt_3 = " MOVIES.DIRECTORNAME LIKE  '%{$search_3}%' ";
+  $filt_4 = " MOVIES.YEAR LIKE  '%{$search_4}%' ";
+  $filt_5 = " MOVIES.RATING >= '$search_5' ";
+  $filt_6 = " MOVIES.MOVIETITLE LIKE  '%{$search_6}%' ";
+  array_push($query_arr, $filt_1 , $filt_2 , $filt_3 , $filt_4 ,$filt_5 , $filt_6);
+  $main_sql = "SELECT * FROM MOVIES WHERE";
+  $counter = 0;
+  for ($i = 0 ; $i < count($arr) ; $i++)
+  {
+  if (!empty($arr[$i]) && $counter === 0 )
+  {
+    $main_sql = $main_sql .$query_arr[$i];
+    $counter++;
+  }
+  else if (!empty($arr[$i]) && $counter !==0)
+  {
+    $main_sql = $main_sql . "AND" . $query_arr[$i];
+  }
+  }
+
+  $result = mysqli_query($db,$main_sql);
+    while($row = mysqli_fetch_assoc($result))
+  {    
+    $filmid = $row['MOVIEID'];
+    $title = $row['MOVIETITLE'];
+    $genre = $row['GENRES'];
+    $rating = $row['RATING'];
+
+    $new_g = "";
+
+    $new_name =   getName($genre,$new_g,0);
+    
+  echo "<tr>" . "<th>" . $title . "</th>" ."<th>" . $new_name . "</th>" . "<th>" . $rating .  "</th>";
+
+  if(isset($_SESSION['email']))
+{ 
+
+  $id = $_SESSION['id'];
+  $sql_user_statement = "SELECT USER_MOVIE.MOVIEID FROM USER_MOVIE WHERE USER_MOVIE.MOVIEID = '$filmid' AND USER_MOVIE.USERID = '$id'" ;
+  $result_user = mysqli_query($db,$sql_user_statement); 
+  $count=$result_user->num_rows;
+
+  if ($count > 0)
+  {
+
+    ?>
+
+      <td>
+          Already in your list
+        </td>
+    <?php
+
+  } 
+  else
+  {
+?>
+      <td>
+      <form action="check_box.php" method="post">
+      <input type="checkbox" id="check_list[]" name="check_list[]" value="<?php echo $filmid; ?>">
+      <label for="vehicle1"> I want this one! </label>
+
+    </td>
+  <?php
+  }   
+      ?>
+
+  <?php
+  }
+  }
+  ?>
+</table>
+</div>
+<?php
+}
   ?>
 
 
@@ -525,7 +658,97 @@ if(isset($_SESSION['email']))
 
 <?php
 }
-?>
+?>  
+
+
+
+
+<div class = filter>
+
+<div style="width:380px;height:90px;border:1px solid #000;">
+
+    <form method="post">
+
+
+    <div class="f_name">
+  
+          <input name="search_name" type="search" autofocus placeholder="Search movie">
+    </div>
+
+    <div class="f_rating">
+          <input name="search_rating" type="search" autofocus placeholder="Filter rating">
+    </div>
+
+
+      <div class="f_year">
+          <input name="search_year" type="search" autofocus placeholder="Year filter">
+     </div>
+
+
+    <div class="f_director">
+          <input name="search_director" type="search" autofocus placeholder="Director filter">
+    </div>
+
+
+  <div class ="f_language">
+
+      <select name="search_lang">  
+        <option> Language of Movie</option>}  
+        <option value="English">English</option>  
+        <option value="German">German</option>   
+        <option value="French">French</option>  
+        <option value="Italian">Italian</option>
+        <option value="Spanish">Spanish</option>  
+        <option value="Russian">Russian</option>  
+        <option value="Turkish">Turkish</option>  
+        <option value="Japanese">Japanese</option>  
+      </select> 
+  </div>
+
+
+  <div class ="f_genre">
+
+      <select name="search_genre">  
+        <option> Genre of Movie</option>}
+        <option value="Action">Action</option>
+        <option value="Adventure">Adventure</option>
+        <option value="Animation">Animation</option> 
+        <option value="Biography">Biography</option>  
+        <option value="Comedy">Comedy</option>   
+        <option value="Crime">Crime</option> 
+        <option value="Drama">Drama</option> 
+        <option value="Family">Family</option>
+        <option value="History">History</option>
+        <option value="Horror">Horror</option> 
+        <option value="Musical">Musical</option>
+        <option value="Mystery">Mystery</option>
+        <option value="Romance">Romance</option>   
+        <option value="Sci-Fi">Sci-Fi</option>
+        <option value="Sport">Sport</option>  
+        <option value="Thriller">Thriller</option> 
+        <option value="War">War</option> 
+        <option value="Western">Western</option> 
+
+      </select> 
+  </div>
+
+
+
+  <div class = "search_but">
+
+    <input type="submit" name="search_button" value="Search">
+
+  </div>
+
+  </form>
+</div>
+
+
+</div>
+
+
+
+
 
 
 

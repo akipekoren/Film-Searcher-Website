@@ -23,7 +23,7 @@ body {
 #div1
 {
 
-height:30px;
+height:39px;
 width: 700px;
 padding: 0;
 margin:0;
@@ -78,7 +78,6 @@ overflow-x: hidden;
   height: 200px;
   table-layout: fixed
 
-
 }
 
 
@@ -92,8 +91,6 @@ td, th {
 tr:nth-child(even) {
   background-color: #dddddd;
 }
-
-
 
 
 .center {
@@ -122,8 +119,8 @@ tr:nth-child(even) {
 .filter
 {
     position: absolute; 
-  left: 120%;
-  top: 27%;
+  left: 65%;
+  top: 24%;
 }
 
 
@@ -214,16 +211,14 @@ width: 125px;}
 
 .button_inp {
   position: absolute;
-  left: 600px;
-  top: 550px;
+  left: 650px;
+  top: 730px;
   width: 200px;
   height: 30px;
 
   background-color:#3390FF;
 
 } 
-
-
 
 .user_name_place{
 
@@ -232,8 +227,6 @@ width: 125px;}
   top: 7%;
 
 }
-
-
 
 .f_name{
 
@@ -271,11 +264,7 @@ width: 125px;}
 
 	</head>
 
-
-
 <body>
-
-
 
 
 <div class="header">
@@ -411,7 +400,6 @@ if(isset($_SESSION['email']) && $_SESSION['email'] == 'admin@gmail.com')
 
 
 <div id="main_list">
-
 <div id="div1">
 <table id=table1>
 
@@ -438,9 +426,9 @@ if(isset($_SESSION['email']) && isset($_SESSION['id']))
 
    ?>
  </tr>
-
-</div>
 </table>
+</div>
+
 
 <div id="div2">
 <table id ="table2">
@@ -503,11 +491,14 @@ while($row = mysqli_fetch_assoc($result))
 
   if ($count > 0)
   {
+
     ?>
 
       <td>
           Already in your list
         </td>
+
+
 
     <?php
 
@@ -542,9 +533,11 @@ while($row = mysqli_fetch_assoc($result))
 
 else if (isset($_POST['search_button']) )
 {
+
   ?>
-</div>
 </table>
+</div>
+
 <div id="div2">
 <table id ="table2">
   <?php
@@ -565,7 +558,7 @@ else if (isset($_POST['search_button']) )
   $filt_1 = " MOVIES.GENRES LIKE '%{$search_1}%' ";
   $filt_2 = " MOVIES.LANG = '$search_2' ";
   $filt_3 = " MOVIES.DIRECTORNAME LIKE  '%{$search_3}%' ";
-  $filt_4 = " MOVIES.YEAR LIKE  '%{$search_4}%' ";
+  $filt_4 = " MOVIES.YEAR >= '$search_4' ";
   $filt_5 = " MOVIES.RATING >= '$search_5' ";
   $filt_6 = " MOVIES.MOVIETITLE LIKE  '%{$search_6}%' ";
   array_push($query_arr, $filt_1 , $filt_2 , $filt_3 , $filt_4 ,$filt_5 , $filt_6);
@@ -632,11 +625,18 @@ else if (isset($_POST['search_button']) )
 
   <?php
   }
+
   }
+
   ?>
+
+
 </table>
+
 </div>
+
 <?php
+
 }
   ?>
 

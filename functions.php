@@ -15,7 +15,7 @@ $pos = strpos($genre, '|');
 $the_rest = substr($genre, $pos + 1 , strlen($genre));
 
 
-if ($counter != 0)
+if ($counter !== 0)
 {
 	$new_g = $new_g .", ". substr($genre, 0 , $pos) ;
 }
@@ -25,13 +25,20 @@ else
 }
 
 $counter++;
-$new_g  = getName($the_rest, $new_g,$counter);
+$new_g  = getName($the_rest, $new_g, $counter);
 }
 
 else
 {
+if($counter !== 0)
+{
+	$new_g = $new_g . ", ". $genre;
+}
+else
+{
+	$new_g = $genre;
+}
 
-$new_g = $genre;
 }
 
 }

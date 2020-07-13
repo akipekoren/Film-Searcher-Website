@@ -58,8 +58,20 @@ session_start();
   display: inline-block;
     cursor: pointer;
       text-align: center;
-      width: 180px;
+      width: 150px;
 
+}
+
+.Com_but
+{
+     background-color: #3390FF;
+  color: #273746;
+  font-size: 11px;
+    text-decoration: none;
+  display: inline-block;
+    cursor: pointer;
+      text-align: center;
+      width: 150px;
 }
 
 .Delete_but
@@ -71,11 +83,10 @@ session_start();
   display: inline-block;
     cursor: pointer;
       text-align: center;
-      width: 180px;
+      width: 150px;
 }
 
 .back_button
-
 
 {
   position: absolute; 
@@ -90,11 +101,6 @@ session_start();
     display: inline-block;
     width:250px;
     height:40px;
-
-
-
-
-
 
 }
 
@@ -161,9 +167,6 @@ session_start();
   top: 7%;
 }
 
-
-  
-
 #div1
 {
 
@@ -171,8 +174,6 @@ height:30px;
 width: 700px;
 padding: 0;
 margin:0;
-
-
 }
 
 
@@ -180,8 +181,8 @@ margin:0;
 {
 
 position: absolute;
-left:300px;
-bottom: 570px;
+left:250px;
+bottom: 600px;
 
 
 }
@@ -191,7 +192,7 @@ bottom: 570px;
 {
 position: absolute;
 height:500px;       
-width: 1200px;
+width: 1500px;
 overflow: auto;
 overflow-x: hidden;
 
@@ -370,7 +371,7 @@ td, th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
-  width: 180px;
+  width: 165px;
 
 }
 
@@ -412,7 +413,6 @@ tr:nth-child(even) {
 
 $name = "Hello" . " " . $_SESSION['username'];
 
-//echo "Hello" . " " . $_SESSION['username'];
 $link = "http://localhost/myrecit/profile.php";
 echo "<a href='"."$link"."'> $name</a>";
 ?>
@@ -450,16 +450,11 @@ echo "<a href='"."$link"."'> $name</a>";
 </form>
 
 
-
-
-
-
 <?php
 
 if(isset($_POST["myMovies"]) || (!isset($_POST["Rules"]) && !isset($_POST["myProf"]) && !isset($_POST["myMovies"]) && !isset($_POST["myComments"]) && !isset($_POST["det"]) && !isset($_POST["profSet"])))
 
 {
-
 
 	?>
 
@@ -474,7 +469,7 @@ if(isset($_POST["myMovies"]) || (!isset($_POST["Rules"]) && !isset($_POST["myPro
   <th>GENRE</th> 
    <th>RATING</th> 
    <th>  </th>
-
+   <th> </th>
    <th>  </th>
 
 
@@ -500,10 +495,6 @@ $sql_statement = "SELECT * FROM USER_MOVIE INNER JOIN MOVIES WHERE USER_MOVIE.MO
 $result = mysqli_query($db,$sql_statement);
 
 
-
-//$result = mysqli_query($db,$sql_statement);
-
-
 while($row = mysqli_fetch_assoc($result))
   {
  
@@ -526,6 +517,12 @@ while($row = mysqli_fetch_assoc($result))
   <td> 
       <form method="POST">
         <button class = "Detail_but" name = "det" value="<?= $filmid ?>" > <b>See the Details</b></button>
+    </form>
+</td>
+
+  <td> 
+      <form method="POST" action="add_comment.php">
+        <button class = "Com_but" name = "com" id= "com" value="<?= $filmid ?>" > <b>Comment</b></button>
     </form>
 </td>
 
@@ -773,7 +770,7 @@ $bio = $row_up["BIO"];
 
 
 ?>
-
+  
 <div class="Profile">
 
 <h1> Change Profile </h1>

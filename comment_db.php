@@ -20,7 +20,7 @@ $comment = $_POST['comment'];
 $date = date("Y-m-d H:i:s");
 
 
-$sql = "INSERT INTO USER_COMMENT (userid, movieid, date_time, user_comment) VALUES ('$id','$filmid','$comment', '$date')";
+$sql = "INSERT INTO USER_COMMENT (userid, movieid, date_time, user_comment) VALUES ('$id','$filmid','$date', '$comment')";
 
 
 $result = mysqli_query($db,$sql);

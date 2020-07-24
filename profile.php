@@ -384,7 +384,7 @@ tr:nth-child(even) {
 
 </style>
 <head>
-	<title></title>
+<title></title>
 </head>
 <body>
 
@@ -949,6 +949,63 @@ else
 
 }
 
+else if (isset($_POST["myComments"]))
+
+{
+
+
+  ?>
+
+<div id="main_list">
+
+<div id="div1">
+<table id=table1>
+
+<tr>
+ <th>MOVIE NAME </th>   
+  <th>DATE</th> 
+   <th>COMMENT</th> 
+
+ </tr>
+
+</div>
+</table>
+
+<div id="div2">
+<table id ="table2">
+
+
+  <?php
+
+$id = $_SESSION['id'];
+$sql_statement = "SELECT * FROM USER_COMMENT WHERE USER_COMMENT.userid = '$id'  " ;
+$result = mysqli_query($db,$sql_statement);
+
+
+while($row = mysqli_fetch_assoc($result))
+{
+  $movie_id = $row["movieid"];
+
+  $sql_movie = "SELECT * FROM MOVIES WHERE MOVIES.MOVIEID = '$movie_id' ";
+  $result_movie = mysqli_query($db,$sql_movie);
+  $row_movie = mysqli_fetch_assoc($result_movie);
+
+  $movie_name = $row_movie["MOVIETITLE"];
+
+  $date = $row["date_time"];
+
+  $comment = $row["user_comment"];
+
+
+  echo "<tr>" . "<th>" . $movie_name . "</th>" ."<th>" . $date . "</th>" . "<th>" . $comment .  "</th>" ;
+
+  
+
+
+}
+
+
+}
 ?>
 
 

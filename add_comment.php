@@ -108,6 +108,12 @@ $movie_director = $row["DIRECTORNAME"];
   position: absolute;
   left: 88%;
   top: 4%;
+width: 175px;} 
+
+
+.button7 {
+  position: absolute;
+
 width: 125px;} 
 
 .user_name_place{
@@ -175,7 +181,7 @@ echo "<a href='"."$link"."'> $name</a>";
 
 <div class= "sub_but">
 
-<button type="submit" name="add_com" class="button button7" value="<?= $filmid ?>" > Update Profile </button>
+<button type="submit" name="add_com" class="button button7" value="<?= $filmid ?>" > Submit Comment</button>
 </div>
 
 </form>
@@ -183,31 +189,3 @@ echo "<a href='"."$link"."'> $name</a>";
 </body>
 </html>
 
-
-
-<?php
-
-
-if (isset($_POST["add_com"]))
-{
-
-
-$id = $_SESSION['id'];
-
-$filmid = $_POST['com'];
-
-$comment = $_POST['comment'];
-
-$date = date("Y-m-d H:i:s");
-
-
-$sql = "INSERT INTO USER_COMMENT (userid, movieid, date_time, user_comment) VALUES ('$id','$filmid','$comment', '$date')";
-
-
-}
-
-
-
-
-
-?>
